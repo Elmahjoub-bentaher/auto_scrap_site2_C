@@ -2,7 +2,7 @@ name: Scraping Automation
 
 on:
   schedule:
-    - cron: '0 0 */2 * *'  # Exécute le workflow tous les 2 jours à minuit UTC
+    - cron: '0 2 */2 * *'  # Exécute le workflow tous les 2 jours à 2:00 UTC
   workflow_dispatch:
 
 jobs:
