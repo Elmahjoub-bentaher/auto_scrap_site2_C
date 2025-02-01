@@ -10,14 +10,17 @@ from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
 import time
 from datetime import datetime
+import random
 
 # Fonction pour scraper les données d'une page
 def scrape_product_page(url):
     # Initialiser le navigateur Selenium
     service = Service(ChromeDriverManager().install())
     options = webdriver.ChromeOptions()
-    options.add_argument("--headless")  # Mode headless (facultatif)
+    options.add_argument("--headless=new")  # Mode headless (facultatif)
     options.add_argument("--disable-blink-features=AutomationControlled")  # Désactiver la détection d'automatisation
+    options.add_argument("--no-sandbox")  # Utile pour GitHub Actions
+    options.add_argument("--disable-dev-shm-usage")  # Évite les erreurs de mémoire partagée
     options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
     driver = webdriver.Chrome(service=service, options=options)
     driver.get(url)
@@ -56,7 +59,7 @@ def scrape_product_page(url):
     general_data['Site web'] = "cdiscount.com"
     general_data['Catégorie'] = "SMARTPHONE"
 
-
+    time.sleep(random.uniform(2, 5))
     return general_data
 
 # Fonction principale pour lire les liens, scraper les données et sauvegarder les résultats

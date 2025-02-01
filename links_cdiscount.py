@@ -8,14 +8,18 @@ from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from webdriver_manager.chrome import ChromeDriverManager
 import time
 from datetime import datetime
+import random
 
 # Configuration de Selenium
 service = Service(ChromeDriverManager().install())
 options = webdriver.ChromeOptions()
-options.add_argument("--headless")  # Mode headless (facultatif)
+options.add_argument("--headless=new")  # Mode headless (facultatif)
 options.add_argument("--disable-blink-features=AutomationControlled")  # Désactiver la détection d'automatisation
+options.add_argument("--no-sandbox")  # Utile pour GitHub Actions
+options.add_argument("--disable-dev-shm-usage")  # Évite les erreurs de mémoire partagée
 options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
 driver = webdriver.Chrome(service=service, options=options)
+driver.set_page_load_timeout(15)
 
 # Liste pour stocker les href
 hrefs = []
@@ -41,11 +45,9 @@ def scrape_hrefs(request, target_hrefs):
         # Ouvrir la page
         url = f"https://www.cdiscount.com/search/10/{request}.html?&page={page}"
         driver.get(url)
-        driver.implicitly_wait(10)
-        time.sleep(1)
         # Attendre que les éléments soient chargés
         try:
-            WebDriverWait(driver, 10).until(
+            WebDriverWait(driver, 30).until(
                 EC.presence_of_all_elements_located((By.CSS_SELECTOR, "#lpBloc > li.abLabel > div > div > form > div.prdtBILDetails > a"))
             )
         except Exception as e:
@@ -71,8 +73,8 @@ def scrape_hrefs(request, target_hrefs):
         page += 1
 
         # Attendre avant de charger la page suivante (pour éviter de surcharger le serveur)
-        time.sleep(8)
-    time.sleep(12)
+        time.sleep(random.uniform(3, 6))
+    time.sleep(random.uniform(6, 9))
     return hrefs
 
 
@@ -81,7 +83,6 @@ for category, request in categories.items():
     print(f"Scraping {category}...")
     hrefs = scrape_hrefs(request, target_hrefs)
     df[category] = pd.Series(hrefs)  # Ajouter les liens dans la colonne correspondante
-    df.to_csv(f"{category}_Hrefs.csv", index=False)  # Sauvegarde individuelle pour chaque catégorie
     print(f"{len(hrefs)} liens trouvés pour {category}.")
 
 today_date = datetime.today().strftime('%Y-%m-%d')
