@@ -64,7 +64,7 @@ def scrape_product_page(url):
 def scrape_and_save(input_csv, output_csv):
     # Lire les liens depuis le fichier CSV
     df_links = pd.read_csv(input_csv)
-    links = df_links['Disque_dur'].tolist() 
+    links = df_links['Lien'].tolist() 
 
     # Initialiser une liste pour stocker les données de tous les produits
     all_data = []
