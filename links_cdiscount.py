@@ -71,8 +71,8 @@ def scrape_hrefs(request, target_hrefs):
         page += 1
 
         # Attendre avant de charger la page suivante (pour éviter de surcharger le serveur)
-        time.sleep(3)
-    time.sleep(6)
+        time.sleep(8)
+    time.sleep(12)
     return hrefs
 
 
