@@ -89,6 +89,6 @@ def scrape_and_save(input_csv, output_csv):
     print(f"Les résultats ont été sauvegardés dans {output_csv}")
 
 today_date = datetime.today().strftime('%Y-%m-%d')
-input_csv = f"Links/Cdiscount_Liens_{today_date}.csv"
+input_csv = f"Links/Cdiscount_Liens_Smartphone_{today_date}.csv"
 output_csv = f"Data/Smartphone_Data_Cdiscount_{today_date}.csv"  # Fichier CSV pour sauvegarder les résultats
 scrape_and_save(input_csv, output_csv)

@@ -49,8 +49,6 @@ def scrape_product_page(url):
         "CPU",
     ]
 
-
-    
     general_data['Nom du produit'] = tree.xpath("//tr[th[contains(text(),'Nom du produit')]]/td/text()")[0].strip() if tree.xpath("//tr[th[contains(text(),'Nom du produit')]]/td") else np.nan
     general_data['Marque'] = tree.xpath("//tr[th[contains(text(),'Marque')]]/td/a/text()")[0].strip() if tree.xpath("//tr[th[contains(text(),'Marque')]]/td/a/text()") else np.nan
     general_data["Stockage"] = tree.xpath("//tr[th[contains(text(),'Disque dur')]]/td/text()")[0].strip() if tree.xpath("//tr[th[contains(text(),'Disque dur')]]/td/text()") else np.nan
@@ -92,6 +90,6 @@ def scrape_and_save(input_csv, output_csv):
 
 today_date = datetime.today().strftime('%Y-%m-%d')
 
-input_csv = f"Links/Cdiscount_Liens_{today_date}.csv"
+input_csv = f"Links/Cdiscount_Liens_Ordinateur_{today_date}.csv"
 output_csv = f"Data/Ordinateur_Data_Cdiscount_{today_date}.csv"
 scrape_and_save(input_csv, output_csv)
